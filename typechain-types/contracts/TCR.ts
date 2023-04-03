@@ -34,8 +34,10 @@ export interface TCRInterface extends utils.Interface {
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
     "PAUSER_ROLE()": FunctionFragment;
     "UPGRADER_ROLE()": FunctionFragment;
+    "admins(address)": FunctionFragment;
     "characterOfToken(uint256)": FunctionFragment;
     "characters(uint256)": FunctionFragment;
+    "configureAdmins(address[],bool[])": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
@@ -60,8 +62,10 @@ export interface TCRInterface extends utils.Interface {
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
       | "UPGRADER_ROLE"
+      | "admins"
       | "characterOfToken"
       | "characters"
+      | "configureAdmins"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
@@ -97,12 +101,20 @@ export interface TCRInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "admins",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "characterOfToken",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "characters",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "configureAdmins",
+    values: [PromiseOrValue<string>[], PromiseOrValue<boolean>[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
@@ -186,11 +198,16 @@ export interface TCRInterface extends utils.Interface {
     functionFragment: "UPGRADER_ROLE",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "admins", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "characterOfToken",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "characters", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "configureAdmins",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
@@ -376,6 +393,11 @@ export interface TCR extends BaseContract {
 
     UPGRADER_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
+    admins(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     characterOfToken(
       _tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -385,6 +407,12 @@ export interface TCR extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string, string] & { name: string; textIPFSHash: string }>;
+
+    configureAdmins(
+      _addresses: PromiseOrValue<string>[],
+      _bools: PromiseOrValue<boolean>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,
@@ -480,6 +508,11 @@ export interface TCR extends BaseContract {
 
   UPGRADER_ROLE(overrides?: CallOverrides): Promise<string>;
 
+  admins(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   characterOfToken(
     _tokenId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -489,6 +522,12 @@ export interface TCR extends BaseContract {
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<[string, string] & { name: string; textIPFSHash: string }>;
+
+  configureAdmins(
+    _addresses: PromiseOrValue<string>[],
+    _bools: PromiseOrValue<boolean>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   getRoleAdmin(
     role: PromiseOrValue<BytesLike>,
@@ -584,6 +623,11 @@ export interface TCR extends BaseContract {
 
     UPGRADER_ROLE(overrides?: CallOverrides): Promise<string>;
 
+    admins(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     characterOfToken(
       _tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -593,6 +637,12 @@ export interface TCR extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string, string] & { name: string; textIPFSHash: string }>;
+
+    configureAdmins(
+      _addresses: PromiseOrValue<string>[],
+      _bools: PromiseOrValue<boolean>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     getRoleAdmin(
       role: PromiseOrValue<BytesLike>,
@@ -756,6 +806,11 @@ export interface TCR extends BaseContract {
 
     UPGRADER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
+    admins(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     characterOfToken(
       _tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -764,6 +819,12 @@ export interface TCR extends BaseContract {
     characters(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    configureAdmins(
+      _addresses: PromiseOrValue<string>[],
+      _bools: PromiseOrValue<boolean>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     getRoleAdmin(
@@ -855,6 +916,11 @@ export interface TCR extends BaseContract {
 
     UPGRADER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    admins(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     characterOfToken(
       _tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -863,6 +929,12 @@ export interface TCR extends BaseContract {
     characters(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    configureAdmins(
+      _addresses: PromiseOrValue<string>[],
+      _bools: PromiseOrValue<boolean>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     getRoleAdmin(

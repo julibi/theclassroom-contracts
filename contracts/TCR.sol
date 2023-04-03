@@ -38,6 +38,7 @@ contract TCR is
 
     mapping(uint256 => Snippet) public snippets;
     mapping(uint256 => Character) public characters;
+    mapping(address => bool) public admins;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -68,11 +69,27 @@ contract TCR is
         return _tokenId % 10;
     }
 
+    function configureAdmins(
+        address[] memory _addresses,
+        bool[] memory _bools
+    ) external whenNotPaused {
+        require(
+            _addresses.length == _bools.length,
+            "Addresses and bools must be same length"
+        );
+        bool isAuthorized = hasRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        require(isAuthorized, "Not authorized");
+        for (uint256 i = 0; i < _addresses.length; i++) {
+            admins[_addresses[i]] = true;
+        }
+    }
+
     function setupCharacter(
         string memory _name,
         string memory _textIPFSHash
     ) external whenNotPaused {
         require(characterIndex < 10, "All 10 characters already set");
+        require(admins[msg.sender], "Only for admins");
         characters[characterIndex].name = _name;
         characters[characterIndex].textIPFSHash = _textIPFSHash;
         characterIndex++;
