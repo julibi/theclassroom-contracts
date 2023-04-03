@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "../interfaces/IMoonpageCollection.sol";
 import "../interfaces/IMoonpageManager.sol";
 
-abstract contract TCR is
+contract TCR is
     Initializable,
     PausableUpgradeable,
     AccessControlUpgradeable,
@@ -109,4 +109,12 @@ abstract contract TCR is
         snippets[_tokenId].character = character;
         index++;
     }
+
+    // ------------------
+    // Explicit overrides
+    // ------------------
+
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyRole(UPGRADER_ROLE) {}
 }
